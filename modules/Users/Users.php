@@ -116,7 +116,7 @@ class Users extends CRMEntity
 
 		\App\Log::trace("Entering getSortOrder() method ...");
 		if (\App\Request::_has('sorder'))
-			$sorder = $this->db->sql_escape_string(\App\Request::_get('sorder'));
+			$sorder = $this->db->sqlEscapeString(\App\Request::_get('sorder'));
 		else
 			$sorder = (($_SESSION['USERS_SORT_ORDER'] != '') ? ($_SESSION['USERS_SORT_ORDER']) : ($this->default_sort_order));
 		\App\Log::trace("Exiting getSortOrder method ...");
@@ -138,7 +138,7 @@ class Users extends CRMEntity
 		}
 
 		if (\App\Request::_has('order_by'))
-			$order_by = $this->db->sql_escape_string(\App\Request::_get('order_by'));
+			$order_by = $this->db->sqlEscapeString(\App\Request::_get('order_by'));
 		else
 			$order_by = (($_SESSION['USERS_ORDER_BY'] != '') ? ($_SESSION['USERS_ORDER_BY']) : ($use_default_order_by));
 		\App\Log::trace("Exiting getOrderBy method ...");
@@ -309,7 +309,7 @@ class Users extends CRMEntity
 			$qcrypt_sql = "SELECT crypt_type from $this->table_name where user_name=?";
 			$crypt_res = $this->db->pquery($qcrypt_sql, array($this->column_fields["user_name"]));
 		}
-		if ($crypt_res && $this->db->num_rows($crypt_res)) {
+		if ($crypt_res && $this->db->numRows($crypt_res)) {
 			$crypt_row = $this->db->fetchByAssoc($crypt_res);
 			$crypt_type = $crypt_row['crypt_type'];
 		}
@@ -375,6 +375,15 @@ class Users extends CRMEntity
 	public function isAuthenticated()
 	{
 		return $this->authenticated;
+	}
+
+	/**
+	 * Function to check whether the user is an Admin user
+	 * @return boolean true/false
+	 */
+	public function isAdminUser()
+	{
+		return (isset($this->is_admin) && $this->is_admin === 'on');
 	}
 
 	/** gives the user id for the specified user name
@@ -544,8 +553,8 @@ class Users extends CRMEntity
 	{
 		$sql1 = 'SELECT attachmentsid FROM vtiger_salesmanattachmentsrel WHERE smid = ?';
 		$res1 = $this->db->pquery($sql1, array($this->id));
-		if ($this->db->num_rows($res1) > 0) {
-			$attachmentId = $this->db->query_result($res1, 0, 'attachmentsid');
+		if ($this->db->numRows($res1) > 0) {
+			$attachmentId = $this->db->queryResult($res1, 0, 'attachmentsid');
 
 			$sql2 = "DELETE FROM vtiger_crmentity WHERE crmid=? && setype='Users Attachments'";
 			$this->db->pquery($sql2, array($attachmentId));
@@ -612,7 +621,6 @@ class Users extends CRMEntity
 	 */
 	public static function getActiveAdminId()
 	{
-		$db = PearDatabase::getInstance();
 		$cache = Vtiger_Cache::getInstance();
 		if ($cache->getAdminUserId()) {
 			return $cache->getAdminUserId();

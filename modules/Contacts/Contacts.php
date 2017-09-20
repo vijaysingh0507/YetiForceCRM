@@ -193,10 +193,10 @@ class Contacts extends CRMEntity
 				// IN clause to avoid duplicate entries
 				$sel_result = $adb->pquery("select $id_field from $rel_table where $entity_id_field=? " .
 					" and $id_field not in (select $id_field from $rel_table where $entity_id_field=?)", array($transferId, $entityId));
-				$res_cnt = $adb->num_rows($sel_result);
+				$res_cnt = $adb->numRows($sel_result);
 				if ($res_cnt > 0) {
 					for ($i = 0; $i < $res_cnt; $i++) {
-						$id_field_value = $adb->query_result($sel_result, $i, $id_field);
+						$id_field_value = $adb->queryResult($sel_result, $i, $id_field);
 						$adb->pquery("update $rel_table set $entity_id_field=? where $entity_id_field=? and $id_field=?", array($entityId, $transferId, $id_field_value));
 					}
 				}
@@ -283,7 +283,7 @@ class Contacts extends CRMEntity
 	}
 	/*
 	 * Function to unlink all the dependent entities of the given Entity by Id
-	 * @param - $recordId 
+	 * @param - $recordId
 	 */
 
 	public function markDeleted($recordId)

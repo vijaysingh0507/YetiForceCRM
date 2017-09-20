@@ -1315,7 +1315,7 @@ $languageStrings = [
 	'BTN_SUBMIT' => 'Prześlij',
 	'LBL_PHONE_CALL_SUCCESS' => 'Trwa wybieranie numeru',
 	'LBL_BAD_REQUEST' => 'Nieprawidłowe zapytanie',
-	'LBL_NOT_ALLOWED_VALUE' => 'Wkryto niedozwoloną wartość, prosmimy o kontakt z administratorem',
+	'LBL_NOT_ALLOWED_VALUE' => 'Wykryto niedozwoloną wartość, prosimy o kontakt z administratorem',
 ];
 $jsLanguageStrings = [
 	'JS_SUMMARY' => 'Podsumowanie',
@@ -1441,7 +1441,6 @@ $jsLanguageStrings = [
 	'JS_TOTAL_RECORDS' => 'Łącznie rekordów',
 	'JS_UPLOADED_FILE_SIZE_EXCEEDS' => 'Przekroczony limit wielkości przesyłanego pliku',
 	'JS_UPLOADED_FILE_SIZE_SHOULD_BE_LESS_THAN' => 'Wielkość przesyłanego pliku powinna być mniejsza niż',
-	'JS_USER_EXISTS' => 'Taki użytkownik istnieje',
 	'JS_VALUE_SHOULD_BE_GREATER_THAN_ZERO' => 'wartość powinna być większa niż zero',
 	'JS_VALUE_SHOULD_NOT_BE_LESS_THAN' => 'Częstotliwość każdego zadania cron nie powinna być mniejsza niż',
 	'JS_YOU_ARE_IN_PAGE_NUMBER' => 'Jesteś na stronie numer',

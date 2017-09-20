@@ -13,11 +13,6 @@ namespace vtlib;
 class Functions
 {
 
-	public static function userIsAdministrator($user)
-	{
-		return (isset($user->is_admin) && $user->is_admin == 'on');
-	}
-
 	public static function currentUserDisplayDateNew()
 	{
 		$current_user = vglobal('current_user');
@@ -244,7 +239,7 @@ class Functions
 		$adb = \PearDatabase::getInstance();
 		if (!self::$userIdNameCache[$id]) {
 			$result = $adb->pquery('SELECT id, user_name FROM vtiger_users');
-			while ($row = $adb->fetch_array($result)) {
+			while ($row = $adb->fetchArray($result)) {
 				self::$userIdNameCache[$row['id']] = $row['user_name'];
 			}
 		}
@@ -352,7 +347,7 @@ class Functions
 		$adb = \PearDatabase::getInstance();
 		$sql = "select tandc from vtiger_inventory_tandc";
 		$result = $adb->pquery($sql, []);
-		$tandc = $adb->query_result($result, 0, "tandc");
+		$tandc = $adb->queryResult($result, 0, "tandc");
 		return $tandc;
 	}
 
@@ -396,9 +391,9 @@ class Functions
 		$commentlist = '';
 		$sql = 'SELECT commentcontent FROM vtiger_modcomments WHERE related_to = ?';
 		$result = $adb->pquery($sql, array($ticketid));
-		$countResult = $adb->num_rows($result);
+		$countResult = $adb->numRows($result);
 		for ($i = 0; $i < $countResult; $i++) {
-			$comment = $adb->query_result($result, $i, 'commentcontent');
+			$comment = $adb->queryResult($result, $i, 'commentcontent');
 			if ($comment != '') {
 				$commentlist .= '<br /><br />' . $comment;
 			}
@@ -491,8 +486,8 @@ class Functions
 	{
 		$adb = \PearDatabase::getInstance();
 		$query = "select activitytype from vtiger_activity where activityid=?";
-		$res = $adb->pquery($query, array($id));
-		$activity_type = $adb->query_result($res, 0, "activitytype");
+		$res = $adb->pquery($query, [$id]);
+		$activity_type = $adb->queryResult($res, 0, "activitytype");
 		return $activity_type;
 	}
 
@@ -530,7 +525,7 @@ class Functions
 			$query = "select unit_price from vtiger_products where productid=?";
 		}
 		$result = $adb->pquery($query, array($productid));
-		$unitpice = $adb->query_result($result, 0, 'unit_price');
+		$unitpice = $adb->queryResult($result, 0, 'unit_price');
 		return $unitpice;
 	}
 
@@ -685,7 +680,6 @@ class Functions
 			return;
 		}
 		$dirs = [];
-		@chmod($rootDir . $src, 0777);
 		$dirs[] = $rootDir . $src;
 		if (is_dir($src)) {
 			foreach ($iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($src, \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::SELF_FIRST) as $item) {
@@ -1038,19 +1032,5 @@ class Functions
 			}
 		}
 		return $difference;
-	}
-
-	public static function varExportMin($var)
-	{
-		if (is_array($var)) {
-			$toImplode = [];
-			foreach ($var as $key => $value) {
-				$toImplode[] = var_export($key, true) . '=>' . self::varExportMin($value);
-			}
-			$code = '[' . implode(',', $toImplode) . ']';
-			return $code;
-		} else {
-			return var_export($var, true);
-		}
 	}
 }

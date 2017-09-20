@@ -90,7 +90,7 @@ class ModCommentsCore extends CRMEntity
 
 		$sortorder = $this->default_sort_order;
 		if (!\App\Request::_isEmpty('sorder'))
-			$sortorder = $this->db->sql_escape_string(\App\Request::_get('sorder'));
+			$sortorder = $this->db->sqlEscapeString(\App\Request::_get('sorder'));
 		else if ($_SESSION[$currentModule . '_Sort_Order'])
 			$sortorder = $_SESSION[$currentModule . '_Sort_Order'];
 
@@ -108,7 +108,7 @@ class ModCommentsCore extends CRMEntity
 
 		$orderby = $use_default_order_by;
 		if (!\App\Request::_isEmpty('order_by'))
-			$orderby = $this->db->sql_escape_string(\App\Request::_get('order_by'));
+			$orderby = $this->db->sqlEscapeString(\App\Request::_get('order_by'));
 		else if ($_SESSION[$currentModule . '_Order_By'])
 			$orderby = $_SESSION[$currentModule . '_Order_By'];
 		return $orderby;
@@ -150,11 +150,11 @@ class ModCommentsCore extends CRMEntity
 		$linkedModulesQuery = $this->db->pquery("SELECT distinct fieldname, columnname, relmodule FROM vtiger_field" .
 			" INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid" .
 			" WHERE uitype='10' && vtiger_fieldmodulerel.module=?", array($module));
-		$linkedFieldsCount = $this->db->num_rows($linkedModulesQuery);
+		$linkedFieldsCount = $this->db->numRows($linkedModulesQuery);
 
 		for ($i = 0; $i < $linkedFieldsCount; $i++) {
-			$related_module = $this->db->query_result($linkedModulesQuery, $i, 'relmodule');
-			$columnname = $this->db->query_result($linkedModulesQuery, $i, 'columnname');
+			$related_module = $this->db->queryResult($linkedModulesQuery, $i, 'relmodule');
+			$columnname = $this->db->queryResult($linkedModulesQuery, $i, 'columnname');
 
 			$other = CRMEntity::getInstance($related_module);
 			vtlib_setup_modulevars($related_module, $other);
@@ -246,12 +246,12 @@ class ModCommentsCore extends CRMEntity
 		$linkedModulesQuery = $this->db->pquery("SELECT distinct fieldname, columnname, relmodule FROM vtiger_field" .
 			" INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid" .
 			" WHERE uitype='10' && vtiger_fieldmodulerel.module=?", array($thismodule));
-		$linkedFieldsCount = $this->db->num_rows($linkedModulesQuery);
+		$linkedFieldsCount = $this->db->numRows($linkedModulesQuery);
 
 		for ($i = 0; $i < $linkedFieldsCount; $i++) {
-			$related_module = $this->db->query_result($linkedModulesQuery, $i, 'relmodule');
-			$fieldname = $this->db->query_result($linkedModulesQuery, $i, 'fieldname');
-			$columnname = $this->db->query_result($linkedModulesQuery, $i, 'columnname');
+			$related_module = $this->db->queryResult($linkedModulesQuery, $i, 'relmodule');
+			$fieldname = $this->db->queryResult($linkedModulesQuery, $i, 'fieldname');
+			$columnname = $this->db->queryResult($linkedModulesQuery, $i, 'columnname');
 
 			$other = CRMEntity::getInstance($related_module);
 			vtlib_setup_modulevars($related_module, $other);
@@ -379,17 +379,17 @@ class ModCommentsCore extends CRMEntity
 	public function moduleHandler($modulename, $event_type)
 	{
 		if ($event_type == 'module.postinstall') {
-			
+
 		} else if ($event_type == 'module.disabled') {
-			
+
 		} else if ($event_type == 'module.enabled') {
-			
+
 		} else if ($event_type == 'module.preuninstall') {
-			
+
 		} else if ($event_type == 'module.preupdate') {
-			
+
 		} else if ($event_type == 'module.postupdate') {
-			
+
 		}
 	}
 }

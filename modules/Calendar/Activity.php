@@ -17,7 +17,7 @@
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
  * Contributor(s): ______________________________________..
- * ****************************************************************************** 
+ * ******************************************************************************
  * Contributor(s): YetiForce.com
  */
 require_once('modules/Calendar/CalendarCommon.php');
@@ -124,7 +124,7 @@ class Activity extends CRMEntity
 
 		\App\Log::trace('Entering getSortOrder() method ...');
 		if (\App\Request::_has('sorder'))
-			$sorder = $this->db->sql_escape_string(\App\Request::_get('sorder'));
+			$sorder = $this->db->sqlEscapeString(\App\Request::_get('sorder'));
 		else
 			$sorder = (($_SESSION['ACTIVITIES_SORT_ORDER'] != '') ? ($_SESSION['ACTIVITIES_SORT_ORDER']) : ($this->default_sort_order));
 		\App\Log::trace('Exiting getSortOrder method ...');
@@ -146,10 +146,10 @@ class Activity extends CRMEntity
 		}
 
 		if (\App\Request::_has('order_by'))
-			$order_by = $this->db->sql_escape_string(\App\Request::_get('order_by'));
+			$order_by = $this->db->sqlEscapeString(\App\Request::_get('order_by'));
 		else
 			$order_by = (($_SESSION['ACTIVITIES_ORDER_BY'] != '') ? ($_SESSION['ACTIVITIES_ORDER_BY']) : ($use_default_order_by));
-		\App\Log::trace("Exiting getOrderBy method ...");
+		\App\Log::trace('Exiting getOrderBy method ...');
 		return $order_by;
 	}
 
@@ -294,7 +294,7 @@ class Activity extends CRMEntity
 		return $query;
 	}
 
-	public function getNonAdminAccessControlQuery($module, $user, $scope = '')
+	public function getNonAdminAccessControlQuery($module, Users $user, $scope = '')
 	{
 		require('user_privileges/user_privileges_' . $user->id . '.php');
 		require('user_privileges/sharing_privileges_' . $user->id . '.php');
@@ -360,24 +360,23 @@ class Activity extends CRMEntity
 		return false;
 	}
 
-	protected function getListViewAccessibleUsers($sharedid)
+	protected function getListViewAccessibleUsers($sharedId)
 	{
 		$db = PearDatabase::getInstance();
-		;
 		$query = "SELECT vtiger_users.id as userid FROM vtiger_sharedcalendar
 					RIGHT JOIN vtiger_users ON vtiger_sharedcalendar.userid=vtiger_users.id and status= 'Active'
 					WHERE sharedid=? || (vtiger_users.status='Active' && vtiger_users.calendarsharedtype='public' && vtiger_users.id <> ?);";
-		$result = $db->pquery($query, array($sharedid, $sharedid));
-		$numberOfRows = $db->num_rows($result);
+		$result = $db->pquery($query, array($sharedId, $sharedId));
+		$numberOfRows = $db->numRows($result);
 		if ($numberOfRows !== 0) {
 			for ($j = 0; $j < $numberOfRows; $j++) {
-				$userid[] = $db->query_result($result, $j, 'userid');
+				$userId[] = $db->queryResult($result, $j, 'userid');
 			}
-			$shared_ids = implode(',', $userid);
+			$sharedIds = implode(',', $userId);
 		}
-		$userid[] = $sharedid;
-		$shared_ids = implode(',', $userid);
-		return $shared_ids;
+		$userId[] = $sharedId;
+		$sharedIds = implode(',', $userId);
+		return $sharedIds;
 	}
 
 	public function deleteRelatedDependent($module, $crmid, $withModule, $withCrmid)
